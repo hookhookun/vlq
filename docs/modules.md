@@ -30,7 +30,7 @@
 
 #### Defined in
 
-[decode.ts:3](https://github.com/hookhookun/vlq/blob/0bb522a/src/decode.ts#L3)
+[decode.ts:3](https://github.com/hookhookun/vlq/blob/fb46ec6/src/decode.ts#L3)
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
 #### Defined in
 
-[encode.ts:6](https://github.com/hookhookun/vlq/blob/0bb522a/src/encode.ts#L6)
+[encode.ts:6](https://github.com/hookhookun/vlq/blob/fb46ec6/src/encode.ts#L6)
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 #### Defined in
 
-[findEfficientChunkSize.ts:4](https://github.com/hookhookun/vlq/blob/0bb522a/src/findEfficientChunkSize.ts#L4)
+[findEfficientChunkSize.ts:4](https://github.com/hookhookun/vlq/blob/fb46ec6/src/findEfficientChunkSize.ts#L4)
 
 ___
 
@@ -97,7 +97,7 @@ ___
 
 #### Defined in
 
-[getBitLength.ts:1](https://github.com/hookhookun/vlq/blob/0bb522a/src/getBitLength.ts#L1)
+[getBitLength.ts:1](https://github.com/hookhookun/vlq/blob/fb46ec6/src/getBitLength.ts#L1)
 
 ___
 
@@ -119,4 +119,4 @@ ___
 
 #### Defined in
 
-[getTotalBitLength.ts:3](https://github.com/hookhookun/vlq/blob/0bb522a/src/getTotalBitLength.ts#L3)
+[getTotalBitLength.ts:3](https://github.com/hookhookun/vlq/blob/fb46ec6/src/getTotalBitLength.ts#L3)

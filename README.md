@@ -13,7 +13,7 @@ npm install @hookun/vlq
 
 ## Document
 
-[docs/README.md](docs/README.md)
+[docs/modules.md](https://github.com/hookun/vlq/docs/modules.md)
 
 ## License
 
