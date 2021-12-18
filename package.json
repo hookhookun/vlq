@@ -28,7 +28,7 @@
         "test:lint": "eslint --ext .ts src",
         "test:module": "ava",
         "preversion": "run-s preversion:*",
-        "preversion:doc": "typedoc",
+        "preversion:doc": "typedoc src/index.ts",
         "preversion:stage": "git add ."
     },
     "dependencies": {
