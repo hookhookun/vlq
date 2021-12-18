@@ -1,7 +1,7 @@
 # @hookun/vlq
 
 [![codecov](https://codecov.io/gh/hookun/vlq/branch/master/graph/badge.svg)](https://codecov.io/gh/hookun/vlq)
-![CI Setup](https://github.com/hookun/vlq/workflows/CI%20Setup/badge.svg)
+[![.github/workflows/workflow.yml](https://github.com/hookhookun/vlq/actions/workflows/workflow.yml/badge.svg)](https://github.com/hookhookun/vlq/actions/workflows/workflow.yml)
 
 A tool to encode/decode arbitrary unsigned integers using predefined-length chunk of bits.
 
