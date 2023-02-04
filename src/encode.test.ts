@@ -1,6 +1,13 @@
 import ava from 'ava';
-import {toString} from '@hookun/bitbybit';
 import {encode} from './encode';
+
+const serialize = function* (ab: ArrayBuffer): Generator<string> {
+    for (const byte of new Uint8Array(ab)) {
+        yield byte.toString(2).padStart(8, '0');
+    }
+};
+
+const toString = (ab: ArrayBuffer): string => [...serialize(ab)].join('');
 
 const test = (
     data: Array<number>,
@@ -9,7 +16,7 @@ const test = (
 ): void => {
     ava(`${data.join(',')} ${chunkSize}`, (t) => {
         const actual = encode(data, chunkSize);
-        t.is(toString(actual, 0), expected);
+        t.is(toString(actual), expected);
     });
 };
 
