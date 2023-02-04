@@ -1,13 +1,13 @@
 import ava from 'ava';
 import {encode} from './encode';
 
-const serialize = function* (ab: ArrayBuffer): Generator<string> {
+const toString = (ab: ArrayBuffer): string => {
+    let result = '';
     for (const byte of new Uint8Array(ab)) {
-        yield byte.toString(2).padStart(8, '0');
+        result += byte.toString(2).padStart(8, '0');
     }
+    return result;
 };
-
-const toString = (ab: ArrayBuffer): string => [...serialize(ab)].join('');
 
 const test = (
     data: Array<number>,

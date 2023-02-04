@@ -1,7 +1,54 @@
-import {createBufferFromBitLength, BitWriter} from '@hookun/bitbybit';
 import {findEfficientChunkSize} from './findEfficientChunkSize';
 import {getTotalBitLength} from './getTotalBitLength';
 import {getBitLength} from './getBitLength';
+
+const bitsInByte = 8;
+
+const listEncodedBlocks = function* (
+    data: Array<number>,
+    bitLengthList: Array<number>,
+    chunkSize: number,
+): Generator<number> {
+    const base = 2 ** chunkSize;
+    const dataLength = data.length;
+    for (let dataIndex = 0; dataIndex < dataLength; dataIndex++) {
+        const valueToBeEncoded = data[dataIndex];
+        for (let chunkIndex = Math.ceil(bitLengthList[dataIndex] / chunkSize); 0 < chunkIndex--;) {
+            yield (0 < chunkIndex ? base : 0) + (Math.floor(valueToBeEncoded / (base ** chunkIndex)) % base);
+        }
+    }
+};
+
+const listEncodedBytes = function* (
+    data: Array<number>,
+    bitLengthList: Array<number>,
+    chunkSize: number,
+): Generator<number> {
+    const blockSize = chunkSize + 1;
+    yield blockSize;
+    let byte = 0;
+    let writtenBits = 0;
+    for (const block of listEncodedBlocks(data, bitLengthList, chunkSize)) {
+        let consumedBits = 0;
+        while (consumedBits < blockSize) {
+            const remainingBits = blockSize - consumedBits;
+            const writableBits = bitsInByte - writtenBits;
+            const bitsToWrite = Math.min(writableBits, remainingBits);
+            const maskedBlock = (block & ((1 << remainingBits) - 1)) >> (remainingBits - bitsToWrite);
+            byte |= maskedBlock << (writableBits - bitsToWrite);
+            consumedBits += bitsToWrite;
+            writtenBits += bitsToWrite;
+            if (writtenBits === bitsInByte) {
+                writtenBits = 0;
+                yield byte;
+                byte = 0;
+            }
+        }
+    }
+    if (0 < writtenBits) {
+        yield byte;
+    }
+};
 
 export const encode = (
     data: Array<number>,
@@ -12,19 +59,10 @@ export const encode = (
         chunkSize: requestedChunkSize,
         bitLength: getTotalBitLength(data, requestedChunkSize, bitLengthList),
     } : findEfficientChunkSize(data, bitLengthList);
-    const dataLength = data.length;
-    const base = 2 ** chunkSize;
-    const blockSize = chunkSize + 1;
-    const writer = new BitWriter(createBufferFromBitLength(totalBitLength + 8));
-    writer.write(blockSize, 8);
-    for (let dataIndex = 0; dataIndex < dataLength; dataIndex++) {
-        const value = data[dataIndex];
-        for (let chunkIndex = Math.ceil(bitLengthList[dataIndex] / chunkSize); 0 < chunkIndex--;) {
-            writer.write(
-                (0 < chunkIndex ? base : 0) + Math.floor(value / (base ** chunkIndex)) % base,
-                blockSize,
-            );
-        }
+    const view = new DataView(new ArrayBuffer(Math.ceil((totalBitLength + 8) / 8)));
+    let byteOffset = 0;
+    for (const byte of listEncodedBytes(data, bitLengthList, chunkSize)) {
+        view.setUint8(byteOffset++, byte);
     }
-    return writer.end();
+    return view.buffer;
 };
