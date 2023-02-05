@@ -9,14 +9,16 @@ const listEncodedBlocks = function* (
     bitLengthList: Array<number>,
     chunkSize: number,
 ): Generator<number> {
-    const base = 2 ** chunkSize;
+    const base = 1 << chunkSize;
+    const mask = base - 1;
     const dataLength = data.length;
     for (let dataIndex = 0; dataIndex < dataLength; dataIndex++) {
         const valueToBeEncoded = data[dataIndex];
         for (let chunkIndex = Math.ceil(bitLengthList[dataIndex] / chunkSize); 0 < chunkIndex--;) {
-            yield (0 < chunkIndex ? base : 0) + (Math.floor(valueToBeEncoded / (base ** chunkIndex)) % base);
+            yield (0 < chunkIndex ? base : 0) | ((valueToBeEncoded >> (chunkSize * chunkIndex)) & mask);
         }
     }
+    yield base;
 };
 
 const listEncodedBytes = function* (
@@ -59,7 +61,7 @@ export const encode = (
         chunkSize: requestedChunkSize,
         bitLength: getTotalBitLength(data, requestedChunkSize, bitLengthList),
     } : findEfficientChunkSize(data, bitLengthList);
-    const view = new DataView(new ArrayBuffer(Math.ceil((totalBitLength + 8) / 8)));
+    const view = new DataView(new ArrayBuffer(Math.ceil((totalBitLength + chunkSize + 1 + bitsInByte) / bitsInByte)));
     let byteOffset = 0;
     for (const byte of listEncodedBytes(data, bitLengthList, chunkSize)) {
         view.setUint8(byteOffset++, byte);
