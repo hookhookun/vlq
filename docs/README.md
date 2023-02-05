@@ -2,7 +2,7 @@
 
 # @hookun/vlq
 
-[![codecov](https://codecov.io/gh/hookun/vlq/branch/master/graph/badge.svg)](https://codecov.io/gh/hookun/vlq)
+[![codecov](https://codecov.io/gh/hookhookun/vlq/branch/master/graph/badge.svg?token=KswdjrQ8Nd)](https://codecov.io/gh/hookhookun/vlq)
 [![.github/workflows/push.yml](https://github.com/hookhookun/vlq/actions/workflows/push.yml/badge.svg)](https://github.com/hookhookun/vlq/actions/workflows/push.yml)
 [![.github/workflows/publish.yml](https://github.com/hookhookun/vlq/actions/workflows/publish.yml/badge.svg)](https://github.com/hookhookun/vlq/actions/workflows/publish.yml)
 
@@ -37,7 +37,7 @@ npm install @hookun/vlq
 
 ## API document
 
-[docs/modules.md](https://github.com/hookun/vlq/docs/modules.md)
+[docs/modules.md](https://github.com/hookhookun/vlq/blob/main/docs/modules.md)
 
 ## Format of encoded binary
 
