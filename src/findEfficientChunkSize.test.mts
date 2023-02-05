@@ -1,5 +1,5 @@
 import ava from 'ava';
-import {findEfficientChunkSize} from './findEfficientChunkSize';
+import {findEfficientChunkSize} from './findEfficientChunkSize.mjs';
 
 const test = (
     {data, expected}: {

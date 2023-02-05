@@ -1,5 +1,5 @@
-import {getBitLength} from './getBitLength';
-import {getTotalBitLength} from './getTotalBitLength';
+import {getBitLength} from './getBitLength.mjs';
+import {getTotalBitLength} from './getTotalBitLength.mjs';
 
 export const findEfficientChunkSize = (
     data: Array<number>,

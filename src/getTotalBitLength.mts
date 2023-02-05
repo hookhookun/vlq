@@ -1,4 +1,4 @@
-import {getBitLength} from './getBitLength';
+import {getBitLength} from './getBitLength.mjs';
 
 export const getTotalBitLength = (
     data: Array<number>,

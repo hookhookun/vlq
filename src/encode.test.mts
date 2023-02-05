@@ -1,5 +1,5 @@
 import ava from 'ava';
-import {encode} from './encode';
+import {encode} from './encode.mjs';
 
 const toString = (ab: ArrayBuffer): string => {
     let result = '';

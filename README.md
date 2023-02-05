@@ -5,13 +5,17 @@
 
 A tool to encode/decode arbitrary unsigned integers using predefined-length chunk of bits.
 
+## Example
+
+
+
 ## Install
 
 ```
 npm install @hookun/vlq
 ```
 
-## Document
+## API Document
 
 [docs/modules.md](https://github.com/hookun/vlq/docs/modules.md)
 

@@ -1,5 +1,5 @@
 import ava from 'ava';
-import {getTotalBitLength} from './getTotalBitLength';
+import {getTotalBitLength} from './getTotalBitLength.mjs';
 
 const test = (
     data: Array<number>,

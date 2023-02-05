@@ -1,5 +1,5 @@
 import ava from 'ava';
-import {getBitLength} from './getBitLength';
+import {getBitLength} from './getBitLength.mjs';
 
 const test = (value: number, expected: number): void => {
     ava(`${value} -> ${expected}`, (t) => {

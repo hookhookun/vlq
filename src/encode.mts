@@ -1,6 +1,6 @@
-import {findEfficientChunkSize} from './findEfficientChunkSize';
-import {getTotalBitLength} from './getTotalBitLength';
-import {getBitLength} from './getBitLength';
+import {findEfficientChunkSize} from './findEfficientChunkSize.mjs';
+import {getTotalBitLength} from './getTotalBitLength.mjs';
+import {getBitLength} from './getBitLength.mjs';
 
 const bitsInByte = 8;
 

@@ -1,5 +1,5 @@
 import ava from 'ava';
-import {decode} from './decode';
+import {decode} from './decode.mjs';
 
 const test = (
     data: string,
