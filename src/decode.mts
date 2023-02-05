@@ -41,7 +41,7 @@ const listValues = function* (view: DataView, chunkSize: number, readerState: Re
         if (block < base) {
             yield value;
             value = 0;
-        } else if (0 < chunk) {
+        } else if (0 < value || 0 < chunk) {
             value = value * (2 ** chunkSize);
         } else {
             break;
