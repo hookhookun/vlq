@@ -2,7 +2,25 @@ import {bitsInByte, chunkSizeChunkBits, chunkSizeOffset} from './constants.mjs';
 
 const getBitLength = (value: number): number => value === 0 ? 1 : Math.ceil(Math.log2(value + 1));
 
-const getChunkSize = (data: Array<number>, requestedChunkSize?: number): number => {
+const arrayCache = new WeakMap<Iterable<number>, Array<number>>();
+const iterate = function* (data: Iterable<number>): Generator<number> {
+    let cached = arrayCache.get(data);
+    if (cached) {
+        for (const item of cached) {
+            yield item;
+        }
+    } else {
+        cached = [];
+        let index = 0;
+        for (const item of data) {
+            yield item;
+            cached[index++] = item;
+        }
+        arrayCache.set(data, cached);
+    }
+};
+
+const getChunkSize = (data: Iterable<number>, requestedChunkSize?: number): number => {
     if (requestedChunkSize) {
         if (!(Number.isInteger(requestedChunkSize) && 0 < requestedChunkSize)) {
             throw new Error('chunkSize must be a positive integer.');
@@ -11,7 +29,7 @@ const getChunkSize = (data: Array<number>, requestedChunkSize?: number): number 
     } else {
         const bitLengthMap = new Map<number, number>();
         let maxBitLength = 0;
-        for (const value of data) {
+        for (const value of iterate(data)) {
             const bitLength = getBitLength(value);
             bitLengthMap.set(bitLength, (bitLengthMap.get(bitLength) || 0) + 1);
             if (maxBitLength < bitLength) {
@@ -36,11 +54,9 @@ const getChunkSize = (data: Array<number>, requestedChunkSize?: number): number 
     }
 };
 
-const listEncodedBlocks = function* (data: Array<number>, chunkSize: number): Generator<number> {
+const listEncodedBlocks = function* (data: Iterable<number>, chunkSize: number): Generator<number> {
     const base = 2 ** chunkSize;
-    const dataLength = data.length;
-    for (let dataIndex = 0; dataIndex < dataLength; dataIndex++) {
-        const valueToBeEncoded = data[dataIndex];
+    for (const valueToBeEncoded of iterate(data)) {
         for (let chunkIndex = Math.ceil(getBitLength(valueToBeEncoded) / chunkSize); 0 < chunkIndex--;) {
             yield (0 < chunkIndex ? base : 0) + (Math.floor(valueToBeEncoded / (2 ** (chunkSize * chunkIndex))) % base);
         }
@@ -80,7 +96,7 @@ const packBytes = function* (
     writerState.writtenBits = writtenBits;
 };
 
-const listEncodedBytes = function* (data: Array<number>, chunkSize: number): Generator<number> {
+const listEncodedBytes = function* (data: Iterable<number>, chunkSize: number): Generator<number> {
     const writerState: WriterState = {byte: 0, writtenBits: 0};
     yield* packBytes(
         writerState,
@@ -97,15 +113,16 @@ const listEncodedBytes = function* (data: Array<number>, chunkSize: number): Gen
 };
 
 export const encode = (
-    data: Array<number>,
+    data: Iterable<number>,
     requestedChunkSize?: number,
 ): Generator<number> => listEncodedBytes(data, getChunkSize(data, requestedChunkSize));
 
-export const encodeToArrayBuffer = (data: Array<number>, requestedChunkSize?: number): ArrayBuffer => {
-    const chunkSize = getChunkSize(data, requestedChunkSize);
+export const encodeToArrayBuffer = (data: Iterable<number>, requestedChunkSize?: number): ArrayBuffer => {
+    const arr = [...data];
+    const chunkSize = getChunkSize(arr, requestedChunkSize);
     const chunkSizePartBits = (chunkSizeChunkBits + 1) * Math.ceil(getBitLength(chunkSize) / chunkSizeChunkBits);
     /** (end of chunks) + (data chunks)  */
-    const dataChunkCount = 1 + data.reduce((s, value) => s + Math.ceil(getBitLength(value) / chunkSize), 0);
+    const dataChunkCount = 1 + arr.reduce((s, value) => s + Math.ceil(getBitLength(value) / chunkSize), 0);
     const dataPartBits = (chunkSize + 1) * dataChunkCount;
     const totalByteLength = Math.ceil((chunkSizePartBits + dataPartBits) / bitsInByte);
     const view = new DataView(new ArrayBuffer(totalByteLength));
