@@ -8,7 +8,7 @@
         "type": "git",
         "url": "https://github.com/hookun/vlq"
     },
-    "version": "0.0.8",
+    "version": "1.0.0",
     "license": "Apache-2.0",
     "author": {
         "name": "Hookun",

@@ -4,19 +4,54 @@
 
 ## Table of contents
 
+### Variables
+
+- [bitsInByte](modules.md#bitsinbyte)
+- [chunkSizeChunkBits](modules.md#chunksizechunkbits)
+- [chunkSizeOffset](modules.md#chunksizeoffset)
+
 ### Functions
 
 - [decode](modules.md#decode)
+- [decodeToArray](modules.md#decodetoarray)
 - [encode](modules.md#encode)
-- [findEfficientChunkSize](modules.md#findefficientchunksize)
-- [getBitLength](modules.md#getbitlength)
-- [getTotalBitLength](modules.md#gettotalbitlength)
+- [encodeToArrayBuffer](modules.md#encodetoarraybuffer)
+
+## Variables
+
+### bitsInByte
+
+• `Const` **bitsInByte**: ``8``
+
+#### Defined in
+
+[constants.mts:1](https://github.com/hookhookun/vlq/blob/24c5d9b/src/constants.mts#L1)
+
+___
+
+### chunkSizeChunkBits
+
+• `Const` **chunkSizeChunkBits**: ``3``
+
+#### Defined in
+
+[constants.mts:2](https://github.com/hookhookun/vlq/blob/24c5d9b/src/constants.mts#L2)
+
+___
+
+### chunkSizeOffset
+
+• `Const` **chunkSizeOffset**: ``1``
+
+#### Defined in
+
+[constants.mts:3](https://github.com/hookhookun/vlq/blob/24c5d9b/src/constants.mts#L3)
 
 ## Functions
 
 ### decode
 
-▸ `Const` **decode**(`encoded`): `Generator`<`number`, `any`, `unknown`\>
+▸ **decode**(`encoded`): `Generator`<`number`, `any`, `unknown`\>
 
 #### Parameters
 
@@ -30,19 +65,60 @@
 
 #### Defined in
 
-[decode.ts:3](https://github.com/hookhookun/vlq/blob/fb46ec6/src/decode.ts#L3)
+[decode.mts:52](https://github.com/hookhookun/vlq/blob/24c5d9b/src/decode.mts#L52)
 
 ___
 
-### encode
+### decodeToArray
 
-▸ `Const` **encode**(`data`, `requestedChunkSize?`): `ArrayBuffer`
+▸ **decodeToArray**(`encoded`): `number`[]
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `data` | `number`[] |
+| `encoded` | `ArrayBuffer` |
+
+#### Returns
+
+`number`[]
+
+#### Defined in
+
+[decode.mts:63](https://github.com/hookhookun/vlq/blob/24c5d9b/src/decode.mts#L63)
+
+___
+
+### encode
+
+▸ **encode**(`data`, `requestedChunkSize?`): `Generator`<`number`, `any`, `unknown`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `Iterable`<`number`\> |
+| `requestedChunkSize?` | `number` |
+
+#### Returns
+
+`Generator`<`number`, `any`, `unknown`\>
+
+#### Defined in
+
+[encode.mts:115](https://github.com/hookhookun/vlq/blob/24c5d9b/src/encode.mts#L115)
+
+___
+
+### encodeToArrayBuffer
+
+▸ **encodeToArrayBuffer**(`data`, `requestedChunkSize?`): `ArrayBuffer`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `Iterable`<`number`\> |
 | `requestedChunkSize?` | `number` |
 
 #### Returns
@@ -51,72 +127,4 @@ ___
 
 #### Defined in
 
-[encode.ts:6](https://github.com/hookhookun/vlq/blob/fb46ec6/src/encode.ts#L6)
-
-___
-
-### findEfficientChunkSize
-
-▸ `Const` **findEfficientChunkSize**(`data`, `bitLengthList?`): `Object`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `data` | `number`[] |
-| `bitLengthList` | `number`[] |
-
-#### Returns
-
-`Object`
-
-| Name | Type |
-| :------ | :------ |
-| `bitLength` | `number` |
-| `chunkSize` | `number` |
-
-#### Defined in
-
-[findEfficientChunkSize.ts:4](https://github.com/hookhookun/vlq/blob/fb46ec6/src/findEfficientChunkSize.ts#L4)
-
-___
-
-### getBitLength
-
-▸ `Const` **getBitLength**(`value`): `number`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `value` | `number` |
-
-#### Returns
-
-`number`
-
-#### Defined in
-
-[getBitLength.ts:1](https://github.com/hookhookun/vlq/blob/fb46ec6/src/getBitLength.ts#L1)
-
-___
-
-### getTotalBitLength
-
-▸ `Const` **getTotalBitLength**(`data`, `chunkSize`, `bitLengthList?`): `number`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `data` | `number`[] |
-| `chunkSize` | `number` |
-| `bitLengthList` | `number`[] |
-
-#### Returns
-
-`number`
-
-#### Defined in
-
-[getTotalBitLength.ts:3](https://github.com/hookhookun/vlq/blob/fb46ec6/src/getTotalBitLength.ts#L3)
+[encode.mts:120](https://github.com/hookhookun/vlq/blob/24c5d9b/src/encode.mts#L120)
