@@ -1,5 +1,5 @@
 import ava from 'ava';
-import {encode} from './encode.mjs';
+import {encodeToArrayBuffer} from './encode.mjs';
 
 const toString = (ab: ArrayBuffer): string => {
     let result = '';
@@ -15,7 +15,7 @@ const test = (
     chunkSize?: number,
 ): void => {
     ava(`${data.join(',')} ${chunkSize}`, (t) => {
-        const actual = encode(data, chunkSize);
+        const actual = encodeToArrayBuffer(data, chunkSize);
         t.is(toString(actual), expected);
     });
 };
@@ -23,7 +23,7 @@ const test = (
 test(
     [0, 1, 2, 3, 0, 1, 2, 3],
     [
-        '00000011',
+        '000010',
         '000',
         '001',
         '010',
@@ -32,7 +32,7 @@ test(
         '001',
         '010',
         '011',
-        '10000000',
+        '1000000000',
     ].join(''),
     2,
 );
@@ -40,7 +40,7 @@ test(
 test(
     [0, 1, 2, 3, 0, 1, 2, 3],
     [
-        '00000010',
+        '000001',
         '00',
         '01',
         '11',
@@ -53,6 +53,6 @@ test(
         '00',
         '11',
         '01',
-        '10000000',
+        '10',
     ].join(''),
 );

@@ -10,6 +10,7 @@ jobs:
           node-version: 18
           cache: npm
       - run: npm install
+      - run: npm run lint
       - run: npm install --no-save c8
       - run: npx c8 npm test
       - run: npx c8 report --reporter=text-lcov > coverage.lcov

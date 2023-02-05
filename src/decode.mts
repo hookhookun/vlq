@@ -1,15 +1,12 @@
-const bitsInByte = 8;
+import {bitsInByte, chunkSizeBits} from './constants.mjs';
 
-const listBlocks = function* (
-    view: DataView,
-    blockSize: number,
-) {
+const listBlocks = function* (view: DataView, blockSize: number) {
     let block = 0;
     let writtenBits = 0;
     const {byteLength} = view;
-    for (let i = 1; i < byteLength; i++) {
+    let remainingBits = bitsInByte - chunkSizeBits;
+    for (let i = 0; i < byteLength; i++) {
         const byte = view.getUint8(i);
-        let remainingBits = bitsInByte;
         while (0 < remainingBits) {
             const bitsToWrite = Math.min(remainingBits, blockSize - writtenBits);
             const masked = (byte & ((1 << remainingBits) - 1)) >> (remainingBits - bitsToWrite);
@@ -23,18 +20,16 @@ const listBlocks = function* (
                 block |= masked << (blockSize - writtenBits);
             }
         }
+        remainingBits = bitsInByte;
     }
 };
 
-export const decode = function* (
-    encoded: ArrayBuffer,
-): Generator<number> {
+export const decode = function* (encoded: ArrayBuffer): Generator<number> {
     const view = new DataView(encoded);
-    const blockSize = view.getUint8(0);
-    const chunkSize = blockSize - 1;
+    const chunkSize = view.getUint8(0) >> (bitsInByte - chunkSizeBits);
     const chunkMask = (1 << chunkSize) - 1;
     let value = 0;
-    for (const block of listBlocks(view, blockSize)) {
+    for (const block of listBlocks(view, chunkSize + 1)) {
         value |= block & chunkMask;
         if (block <= chunkMask) {
             yield value;
@@ -46,3 +41,5 @@ export const decode = function* (
         }
     }
 };
+
+export const decodeToArray = (encoded: ArrayBuffer) => [...decode(encoded)];

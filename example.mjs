@@ -1,7 +1,26 @@
-import console from 'console';
-import {encode, decode} from './lib/index.mjs';
+/* eslint-disable no-undef */
+import {encodeToArrayBuffer, decodeToArray} from './lib/index.mjs';
 
-const source = [100, 200, 300, 400];
-const encoded = encode(source);
-console.info(encoded);
-console.info(decode(encoded));
+{
+    const encoded = encodeToArrayBuffer([0, 1, 0, 1]);
+    console.info(Buffer.from(encoded).toString('hex'));
+    console.info(decodeToArray(encoded));
+}
+
+{
+    const encoded = encodeToArrayBuffer([1, 2, 3, 4]);
+    console.info(Buffer.from(encoded).toString('hex'));
+    console.info(decodeToArray(encoded));
+}
+
+{
+    const encoded = encodeToArrayBuffer([10, 20, 30, 40]);
+    console.info(Buffer.from(encoded).toString('hex'));
+    console.info(decodeToArray(encoded));
+}
+
+{
+    const encoded = encodeToArrayBuffer([100, 200, 300, 400]);
+    console.info(Buffer.from(encoded).toString('hex'));
+    console.info(decodeToArray(encoded));
+}
