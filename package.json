@@ -28,7 +28,7 @@
         "lint": "eslint --ext .mts src",
         "test": "ava",
         "preversion": "run-s preversion:*",
-        "preversion:doc": "npx typedoc src/index.ts",
+        "preversion:doc": "npx typedoc src/index.mts",
         "preversion:stage": "git add ."
     },
     "devDependencies": {
