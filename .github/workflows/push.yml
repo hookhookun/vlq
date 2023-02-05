@@ -16,7 +16,6 @@ jobs:
       - run: npx c8 report --reporter=text-lcov > coverage.lcov
       - uses: codecov/codecov-action@v2
   Build:
-    needs: [Test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -24,10 +23,5 @@ jobs:
         with:
           node-version: 18
           cache: npm
-          registry-url: https://registry.npmjs.org
       - run: npm install
       - run: npm run build
-      - run: npm publish
-        if: contains(github.ref, 'tags/v')
-        env: 
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
