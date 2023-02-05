@@ -9,7 +9,14 @@ import {encodeToArrayBuffer, decodeToArray} from './lib/index.mjs';
 }
 
 {
-    const encoded = encodeToArrayBuffer([1, 2, 3, 4]);
+    const encoded = encodeToArrayBuffer([1, 2, 3, 4], 1);
+    console.info(Buffer.from(encoded).toString('hex'));
+    console.info(Buffer.from(encoded).toString('base64url'));
+    console.info(decodeToArray(encoded));
+}
+
+{
+    const encoded = encodeToArrayBuffer([1, 2, 3, 4], 2);
     console.info(Buffer.from(encoded).toString('hex'));
     console.info(Buffer.from(encoded).toString('base64url'));
     console.info(decodeToArray(encoded));
