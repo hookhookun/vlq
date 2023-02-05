@@ -18,21 +18,18 @@
     "engines": {
         "node": ">=10"
     },
-    "main": "lib/index.js",
+    "type": "module",
+    "main": "lib/index.mjs",
     "files": [
         "lib"
     ],
     "scripts": {
         "build": "tsc",
-        "test": "run-s test:*",
-        "test:lint": "eslint --ext .ts src",
-        "test:module": "ava",
+        "lint": "eslint --ext .mts src",
+        "test": "ava",
         "preversion": "run-s preversion:*",
-        "preversion:doc": "typedoc src/index.ts",
+        "preversion:doc": "npx typedoc src/index.ts",
         "preversion:stage": "git add ."
-    },
-    "dependencies": {
-        "@hookun/bitbybit": "^0.0.15"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^5.7.0",
@@ -41,16 +38,16 @@
         "eslint": "^8.5.0",
         "npm-run-all": "^4.1.5",
         "ts-node": "^10.4.0",
-        "typedoc": "^0.22.10",
+        "typedoc": "^0.23.24",
         "typedoc-plugin-markdown": "^3.11.8",
         "typescript": "^4.5.4"
     },
     "ava": {
-        "extensions": [
-            "ts"
-        ],
-        "require": [
-            "ts-node/register"
+        "extensions": {
+            "mts": "module"
+        },
+        "nodeArguments": [
+            "--loader=ts-node/esm"
         ]
     },
     "eslintConfig": {
@@ -67,6 +64,7 @@
             "es6": true
         },
         "rules": {
+            "no-bitwise": "error",
             "quotes": "off",
             "semi": "off",
             "@typescript-eslint/semi": "error",
