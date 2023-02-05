@@ -37,13 +37,12 @@ const getChunkSize = (data: Array<number>, requestedChunkSize?: number): number 
 };
 
 const listEncodedBlocks = function* (data: Array<number>, chunkSize: number): Generator<number> {
-    const base = 1 << chunkSize;
-    const mask = base - 1;
+    const base = 2 ** chunkSize;
     const dataLength = data.length;
     for (let dataIndex = 0; dataIndex < dataLength; dataIndex++) {
         const valueToBeEncoded = data[dataIndex];
         for (let chunkIndex = Math.ceil(getBitLength(valueToBeEncoded) / chunkSize); 0 < chunkIndex--;) {
-            yield (0 < chunkIndex ? base : 0) | ((valueToBeEncoded >> (chunkSize * chunkIndex)) & mask);
+            yield (0 < chunkIndex ? base : 0) + (Math.floor(valueToBeEncoded / (2 ** (chunkSize * chunkIndex))) % base);
         }
     }
 };
@@ -66,8 +65,8 @@ const packBytes = function* (
             const remainingBits = blockSize - consumedBits;
             const writableBits = bitsInByte - writtenBits;
             const bitsToWrite = Math.min(writableBits, remainingBits);
-            const maskedBlock = (block & ((1 << remainingBits) - 1)) >> (remainingBits - bitsToWrite);
-            byte |= maskedBlock << (writableBits - bitsToWrite);
+            const maskedBlock = Math.floor((block % 2 ** remainingBits) / (2 ** (remainingBits - bitsToWrite)));
+            byte += maskedBlock * (2 ** (writableBits - bitsToWrite));
             consumedBits += bitsToWrite;
             writtenBits += bitsToWrite;
             if (writtenBits === bitsInByte) {
@@ -91,7 +90,7 @@ const listEncodedBytes = function* (data: Array<number>, chunkSize: number): Gen
     const blockSize = chunkSize + 1;
     yield* packBytes(writerState, blockSize, listEncodedBlocks(data, chunkSize));
     /** output the end of chunks */
-    yield* packBytes(writerState, blockSize, [1 << chunkSize]);
+    yield* packBytes(writerState, blockSize, [2 ** chunkSize]);
     if (0 < writerState.writtenBits) {
         yield writerState.byte;
     }

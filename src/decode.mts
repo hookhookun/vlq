@@ -14,16 +14,16 @@ const listBlocks = function* (view: DataView, blockSize: number, readerState: Re
         const byte = view.getUint8(i);
         while (0 < remainingBits) {
             const bitsToWrite = Math.min(remainingBits, blockSize - writtenBits);
-            const masked = (byte & ((1 << remainingBits) - 1)) >> (remainingBits - bitsToWrite);
+            const masked = Math.floor((byte % (2 ** remainingBits)) / (2 ** (remainingBits - bitsToWrite)));
             remainingBits -= bitsToWrite;
             readerState.bitOffset = bitsInByte - remainingBits;
             writtenBits += bitsToWrite;
             if (blockSize <= writtenBits) {
-                yield block | masked;
+                yield block + masked;
                 block = 0;
                 writtenBits = 0;
             } else {
-                block |= masked << (blockSize - writtenBits);
+                block += masked * (2 ** (blockSize - writtenBits));
             }
         }
         remainingBits = bitsInByte;
@@ -33,15 +33,16 @@ const listBlocks = function* (view: DataView, blockSize: number, readerState: Re
 };
 
 const listValues = function* (view: DataView, chunkSize: number, readerState: ReaderState) {
-    const chunkMask = (1 << chunkSize) - 1;
+    const base = 2 ** chunkSize;
     let value = 0;
     for (const block of listBlocks(view, chunkSize + 1, readerState)) {
-        value |= block & chunkMask;
-        if (block <= chunkMask) {
+        const chunk = block % base;
+        value += chunk;
+        if (block < base) {
             yield value;
             value = 0;
-        } else if (0 < (block & chunkMask)) {
-            value = value << chunkSize;
+        } else if (0 < chunk) {
+            value = value * (2 ** chunkSize);
         } else {
             break;
         }
