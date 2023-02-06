@@ -4,8 +4,8 @@ import * as fs from 'node:fs/promises';
 import {execSync} from 'node:child_process';
 import ts from 'typescript';
 
-const rootDir = new URL('.', import.meta.url);
-const cjsDir = new URL('cjs/', rootDir);
+const rootDir = new URL('./', import.meta.url);
+const cjsDir = new URL('cjs/', import.meta.url);
 const mjsFiles = await fs.readdir(cjsDir);
 /**
  * @param {ts.Node} node
