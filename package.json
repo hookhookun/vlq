@@ -18,13 +18,20 @@
     "engines": {
         "node": ">=10"
     },
-    "type": "module",
-    "main": "lib/index.mjs",
     "files": [
-        "lib"
+        "lib",
+        "cjs"
     ],
+    "type": "module",
+    "main": "./lib/index.mjs",
+    "exports": {
+        "import": "./lib/index.mjs",
+        "require": "./cjs/index.cjs"
+    },
     "scripts": {
-        "build": "tsc",
+        "build": "run-p build:*",
+        "build:esm": "tsc",
+        "build:cjs": "node cjs.mjs",
         "lint": "eslint --ext .mts src",
         "test": "ava",
         "preversion": "run-s preversion:*",
