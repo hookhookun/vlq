@@ -6,7 +6,6 @@ import ts from 'typescript';
 
 const rootDir = new URL('./', import.meta.url);
 const cjsDir = new URL('cjs/', import.meta.url);
-const mjsFiles = await fs.readdir(cjsDir);
 /**
  * @param {ts.Node} node
  * @param {ts.SourceFile} source
@@ -68,7 +67,7 @@ const listRelativeFilePathStringLiteralsFromLast = function* (fileName, code) {
 };
 execSync('npx tsc --module CommonJS --outDir cjs', {cwd: rootDir, stdio: 'inherit'});
 await Promise.all(
-    mjsFiles.map(async (fileName) => {
+    (await fs.readdir(cjsDir)).map(async (fileName) => {
         const file = new URL(fileName, cjsDir);
         let code = await fs.readFile(file, 'utf8');
         for (const {text, end} of listRelativeFilePathStringLiteralsFromLast(fileName, code)) {
