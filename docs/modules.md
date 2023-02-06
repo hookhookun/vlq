@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[constants.mts:1](https://github.com/hookhookun/vlq/blob/d3af9e3/src/constants.mts#L1)
+[constants.mts:1](https://github.com/hookhookun/vlq/blob/f46f5fc/src/constants.mts#L1)
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
 #### Defined in
 
-[constants.mts:2](https://github.com/hookhookun/vlq/blob/d3af9e3/src/constants.mts#L2)
+[constants.mts:2](https://github.com/hookhookun/vlq/blob/f46f5fc/src/constants.mts#L2)
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 #### Defined in
 
-[constants.mts:3](https://github.com/hookhookun/vlq/blob/d3af9e3/src/constants.mts#L3)
+[constants.mts:3](https://github.com/hookhookun/vlq/blob/f46f5fc/src/constants.mts#L3)
 
 ## Functions
 
@@ -65,7 +65,7 @@ ___
 
 #### Defined in
 
-[decode.mts:52](https://github.com/hookhookun/vlq/blob/d3af9e3/src/decode.mts#L52)
+[decode.mts:52](https://github.com/hookhookun/vlq/blob/f46f5fc/src/decode.mts#L52)
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 #### Defined in
 
-[decode.mts:63](https://github.com/hookhookun/vlq/blob/d3af9e3/src/decode.mts#L63)
+[decode.mts:63](https://github.com/hookhookun/vlq/blob/f46f5fc/src/decode.mts#L63)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[encode.mts:115](https://github.com/hookhookun/vlq/blob/d3af9e3/src/encode.mts#L115)
+[encode.mts:115](https://github.com/hookhookun/vlq/blob/f46f5fc/src/encode.mts#L115)
 
 ___
 
@@ -127,4 +127,4 @@ ___
 
 #### Defined in
 
-[encode.mts:120](https://github.com/hookhookun/vlq/blob/d3af9e3/src/encode.mts#L120)
+[encode.mts:120](https://github.com/hookhookun/vlq/blob/f46f5fc/src/encode.mts#L120)
